@@ -11,6 +11,7 @@ class User(db.Model):
     def __init__(self, email, password):
         self.email = email
         self.password = password
+        self.is_active = True
 
     def __repr__(self):
         return f'<User {self.email}>'
