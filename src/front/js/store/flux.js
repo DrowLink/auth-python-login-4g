@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
+      userEmail: null,
       message: null,
       demo: [
         {
@@ -43,7 +44,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + store.token,
           },
           body: JSON.stringify({
             email: email,
@@ -61,10 +61,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             return false;
           }
           const data = await resp.json();
-          sessionStorage.setItem("token", data.token);
+          localStorage.setItem("token", data.access_token);
           localStorage.setItem("email", JSON.stringify(data.email));
-          setStore({ token: data.token });
-          setStore({ userLoggedIn: data.email });
+          console.log(data);
+          setStore({ token: data.access_token });
+          setStore({ userEmail: data.email });
           return true;
         } catch (error) {
           console.error("There has been an error login in");

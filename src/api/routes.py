@@ -15,11 +15,12 @@ api = Blueprint('api', __name__)
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if email != "test" or password != "test":
+    user= User.query.filter_by(email=email, password=password).first()
+    if user is None:
         return jsonify({"msg": "Bad email or password"}), 401
-
+        
     access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)
+    return jsonify({"access_token": access_token, "email": email})
 
 
 @api.route('/user', methods=['POST'])
@@ -37,7 +38,7 @@ def new_user():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({"user": new_user.serialize(), "token": create_access_token(identity=new_user.id)})
+        return jsonify({"user": new_user.serialize()})
     except Exception as err:
         return jsonify({"message": "Ha ocurrido un error!"}), 500
     return  jsonify({"message":"Method not implemented yet!" }), 500
