@@ -4,7 +4,7 @@ import rigoImageUrl from "../../img/rigo-baby.jpg";
 import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
 
-export const Profile = () => {
+export const Private = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 

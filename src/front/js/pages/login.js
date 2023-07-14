@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export const Login = () => {
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export const Login = () => {
     let response = await actions.login(email, password);
     if (response) {
       {
-        navigate("/profile");
+        navigate("/private");
         console.log("Credenciales válidas");
       }
     } else {

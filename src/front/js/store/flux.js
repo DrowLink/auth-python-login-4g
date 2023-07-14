@@ -36,10 +36,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         //reset the global store
         setStore({ demo: demo });
       },
-
+      logout: () => {
+        sessionStorage.removeItem("token");
+        console.log("Logging out");
+        setStore({ token: null });
+      },
       login: async (email, password) => {
         const store = getStore();
-
         const options = {
           method: "POST",
           headers: {
@@ -50,7 +53,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             password: password,
           }),
         };
-
         try {
           const resp = await fetch(
             process.env.BACKEND_URL + "/api/token",
@@ -69,6 +71,29 @@ const getState = ({ getStore, getActions, setStore }) => {
           return true;
         } catch (error) {
           console.error("There has been an error login in");
+        }
+      },
+      newUsers: async (user) => {
+        try {
+          const resp = await fetch(process.env.BACKEND_URL + "/api/user", {
+            method: "POST",
+            body: JSON.stringify(user),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            setStore({
+              user: data.user,
+            });
+            console.log(data);
+            return true;
+          } else {
+            return false;
+          }
+        } catch (err) {
+          console.log(err);
         }
       },
     },
